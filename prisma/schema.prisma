@@ -1,0 +1,78 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("POSTGRES_PRISMA_URL")
+  // non pooling とは、DB接続をプールしないという意味 プールとは、DB接続を事前に確立しておき、必要に応じて接続を再利用する仕組み
+  directUrl = env("POSTGRES_URL_NON_POOLING")
+  // migration操作するときに本番DBに影響を与えないようにするために、shadowDatabaseUrlを指定する
+  shadowDatabaseUrl = env("POSTGRES_URL_NON_POOLING")
+}
+
+// book は マイクロsmsで管理するので、ここでは定義しない
+
+
+model Account {
+  id                 String  @id @default(cuid())
+  userId             String
+  type               String
+  provider           String
+  providerAccountId  String
+  refresh_token      String?  @db.Text
+  access_token       String?  @db.Text
+  expires_at         Int?
+  token_type         String?
+  scope              String?
+  id_token           String?  @db.Text
+  session_state      String?
+
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+// 複合ユニーク制約: ２つセットで、ユニークになる、 providerとproviderAccountIdの組み合わせがユニークになるということ
+// where区では、provider_providerAccountIdという名前で、組み合わせを指定する
+
+  @@unique([provider, providerAccountId])
+}
+
+model Session {
+  id           String   @id @default(cuid())
+  sessionToken String   @unique
+  userId       String
+  expires      DateTime
+  user         User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+}
+
+model User {
+  id            String    @id @default(cuid())
+  name          String?
+  email         String?   @unique
+  emailVerified DateTime?
+  image         String?
+  accounts      Account[]
+  sessions      Session[]
+  purchases     Purchase[]
+}
+
+// 購入履歴
+model Purchase {
+  // idは、cuid()を使って、ランダムな文字列を生成する これは、プライマリーキーになる
+  id String @id @default(cuid())
+  userId String
+  bookId String
+  createdAt DateTime @default(now())
+  // onDelete: Cascade は、親テーブルのレコードが削除されたら、子テーブルのレコードも削除するという意味
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+}
+
+model VerificationToken {
+  identifier String
+  token      String   @unique
+  expires    DateTime
+
+  @@unique([identifier, token])
+}
