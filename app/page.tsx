@@ -8,17 +8,25 @@ import { Purchase, User } from "./types/types";
 
 //https://zenn.dev/arsaga/articles/3f5bce7c904ebe#%E3%83%90%E3%83%BC%E3%82%B8%E3%83%A7%E3%83%B3%E6%83%85%E5%A0%B1
 // 疑似データ
-const contents = [
+let contents = [
   {
     id: 1,
     title: "Book 1",
-    thumbnail: "/thumbnails/discord-clone-udemy.png",
-    author: {
-      id: 1,
-      name: "Author 1",
-      description: "Author 1 description",
-      profile_icon: "https://source.unsplash.com/random/2",
-    },
+    thumbnail: "/thumbnails/friends.jpg",
+    plans: [
+      {
+        id: 1,
+        name: "Author 1",
+        description: "Author 1 description",
+        profile_icon: "https://source.unsplash.com/random/2",
+      },
+      {
+        id: 2,
+        name: "Author 2",
+        description: "Author 2 description",
+        profile_icon: "https://source.unsplash.com/random/3",
+      },
+    ],
     content: "Content 1",
     created_at: new Date().toString(),
     updated_at: new Date().toString(),
@@ -26,13 +34,15 @@ const contents = [
   {
     id: 2,
     title: "Book 2",
-    thumbnail: "/thumbnails/notion-udemy.png",
-    author: {
-      id: 2,
-      name: "Author 2",
-      description: "Author 2 description",
-      profile_icon: "https://source.unsplash.com/random/3",
-    },
+    thumbnail: "/thumbnails/group.jpg",
+    plans: [
+      {
+        id: 2,
+        name: "Author 2",
+        description: "Author 2 description",
+        profile_icon: "https://source.unsplash.com/random/3",
+      },
+    ],
     content: "Content 2",
     created_at: new Date().toString(),
     updated_at: new Date().toString(),
@@ -40,19 +50,32 @@ const contents = [
   {
     id: 3,
     title: "Book 3",
-    thumbnail: "/thumbnails/openai-chatapplication-udem.png",
-    author: {
-      id: 3,
-      name: "Author 3",
-      description: "Author 3 description",
-      profile_icon: "https://source.unsplash.com/random/4",
-    },
+    thumbnail: "/thumbnails/study.jpg",
+    plans: [
+      {
+        id: 3,
+        name: "Author 3",
+        description: "Author 3 description",
+        profile_icon: "https://source.unsplash.com/random/4",
+      },
+    ],
     content: "Content 3",
+    created_at: new Date().toString(),
+    updated_at: new Date().toString(),
+  },
+  {
+    id: 4,
+    title: "Book 4",
+    thumbnail: "/thumbnails/group.jpg",
+    plans: [],
+    content: "Content 4",
     created_at: new Date().toString(),
     updated_at: new Date().toString(),
   },
   // 他の本のデータ...
 ];
+
+contents.push(...contents, ...contents, ...contents, ...contents);
 
 // eslint-disable-next-line @next/next/no-async-client-component
 export default async function Home() {
@@ -86,19 +109,20 @@ export default async function Home() {
 
   return (
     <>
-      <main className="flex flex-wrap justify-center items-center md:mt-32 mt-20">
-        <h2 className="text-center w-full font-bold text-3xl mb-2">
-          Book Commerce App
-        </h2>
-        {contents.map((book) => (
-          <Book
-            key={book.id}
-            book={book}
-            isPurchased={purchaseBookIds?.includes(book.id)}
-            // book内で毎回user情報を取得するのは、パフォーマンスが悪いので、ここで一度取得して、propsで渡す
-            user={user}
-          />
-        ))}
+      <main className="md:mt-32 mt-20 lg:mx-80">
+        <h2 className="text-center w-full font-bold text-3xl mb-2">OB訪問</h2>
+        <div className="columns-2 md:columns-3">
+          {contents.map((book) => (
+            <div key={book.id} className="break-inside-avoid mx-3 mb-6">
+              <Book
+                book={book}
+                isPurchased={purchaseBookIds?.includes(book.id)}
+                // book内で毎回user情報を取得するのは、パフォーマンスが悪いので、ここで一度取得して、propsで渡す
+                user={user}
+              />
+            </div>
+          ))}
+        </div>
       </main>
     </>
   );

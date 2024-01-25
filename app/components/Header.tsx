@@ -12,10 +12,10 @@ const Header = async () => {
   const user = session?.user;
   // console.log(user);
   return (
-    <header className="bg-slate-600 text-gray-100 shadow-lg">
+    <header className="bg-primary-600 text-gray-100 shadow-lg">
       <nav className="flex items-center justify-between p-4">
         <Link href={"/"} className="text-xl font-bold">
-          Book Commerce
+          POSSE CARRER HUB
         </Link>
         <div className="flex items-center gap-1">
           <Link
