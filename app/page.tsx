@@ -12,19 +12,22 @@ let contents = [
   {
     id: 1,
     title: "Book 1",
-    thumbnail: "/thumbnails/friends.jpg",
     plans: [
       {
         id: 1,
         name: "Author 1",
         description: "Author 1 description",
         profile_icon: "https://source.unsplash.com/random/2",
+        title: "【25卒向け】即日対応 模擬面接しましょう！",
+        thumbnail: "/thumbnails/friends.jpg",
       },
       {
         id: 2,
         name: "Author 2",
         description: "Author 2 description",
         profile_icon: "https://source.unsplash.com/random/3",
+        title: "【25卒向け】模擬面接",
+        thumbnail: "/thumbnails/group.jpg",
       },
     ],
     content: "Content 1",
@@ -34,13 +37,14 @@ let contents = [
   {
     id: 2,
     title: "Book 2",
-    thumbnail: "/thumbnails/group.jpg",
     plans: [
       {
         id: 2,
         name: "Author 2",
         description: "Author 2 description",
         profile_icon: "https://source.unsplash.com/random/3",
+        title: "【25卒向け】模擬面接",
+        thumbnail: "/thumbnails/group.jpg",
       },
     ],
     content: "Content 2",
@@ -50,13 +54,14 @@ let contents = [
   {
     id: 3,
     title: "Book 3",
-    thumbnail: "/thumbnails/study.jpg",
     plans: [
       {
         id: 3,
         name: "Author 3",
         description: "Author 3 description",
+        title: "【25卒向け】模擬面接",
         profile_icon: "https://source.unsplash.com/random/4",
+        thumbnail: "/thumbnails/study.jpg",
       },
     ],
     content: "Content 3",
@@ -66,7 +71,6 @@ let contents = [
   {
     id: 4,
     title: "Book 4",
-    thumbnail: "/thumbnails/group.jpg",
     plans: [],
     content: "Content 4",
     created_at: new Date().toString(),

@@ -5,10 +5,18 @@ type BookType = {
   title: string;
   content: string;
   price: number;
-  thumbnail: { url: string };
   createdAt: string;
   updatedAt: string;
+  plans: Plan[];
 };
+
+type Plan = {
+  id: string;
+  name: string;
+  description: number;
+  title: string;
+  thumbnail: string;
+}
 
 type User = {
     id: string;

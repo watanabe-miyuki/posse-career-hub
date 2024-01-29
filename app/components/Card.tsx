@@ -2,7 +2,6 @@
 
 import Image from "next/image";
 import { BookType, User } from "../types/types";
-import { useState } from "react";
 import { useRouter } from "next/navigation";
 import Link from "next/link";
 
@@ -21,7 +20,6 @@ type BookProps = {
 // eslint-disable-next-line react/display-name
 const Book = ({ book, isPurchased, user }: BookProps) => {
   // console.log(isPurchased);
-  const [showModal, setShowModal] = useState(false);
   const router = useRouter();
 
   const startCheckout = async () => {
@@ -52,31 +50,15 @@ const Book = ({ book, isPurchased, user }: BookProps) => {
   };
 
   // useStateをつかときはuse clientをつける
-  const handleCancel = () => {
-    setShowModal(false);
-    console.log("cancel");
-  };
 
-  const handlePurchaseClick = () => {
+  const handlePlanRequestClick = () => {
     if (isPurchased) {
       alert("すでに購入済みです");
     } else {
-      setShowModal(true);
+      alert("プランをリクエストしますか？");
     }
 
     console.log("purchase");
-  };
-
-  const handlePurchaseConfirm = () => {
-    if (!user) {
-      setShowModal(false);
-      // ログインページへリダイレクト
-      router.push("/api/auth/signin");
-    } else {
-      // 購入処理
-    }
-    console.log("confirm");
-    startCheckout();
   };
 
   return (
@@ -100,7 +82,7 @@ const Book = ({ book, isPurchased, user }: BookProps) => {
 
       <div className="shadow-2xl">
         <div>
-          <div className="bg-slate-100">
+          <div>
             <div className="flex">
               <p className="bg-[#f4868b] grow text-center">IT・通信</p>
               <p className="bg-[#89b1dd] grow text-center">内定者</p>
@@ -127,47 +109,51 @@ const Book = ({ book, isPurchased, user }: BookProps) => {
             <p className="m-2 text-md text-slate-700 text-center">
               ★★★★★ 5.0 (7)
             </p>
+            {/* プランがない場合 */}
+            {!book.plans.length && (
+              <div className="flex justify-center ">
+                <button
+                  className="bg-primary-500 hover:bg-primary-700 text-white font-bold py-2 mx-4 w-full rounded text-center mb-4"
+                  onClick={handlePlanRequestClick}
+                >
+                  プランをリクエスト
+                </button>
+              </div>
+            )}
           </div>
           <a
-            onClick={handlePurchaseClick}
+            onClick={handlePlanRequestClick}
+            href="#"
             // className="cursor-pointer shadow-2xl duration-300 hover:translate-y-1 hover:shadow-none"
           >
             {book.plans.map((plan) => (
-              <div key={plan.id} className="relative w-full h-[200px]">
+              <div
+                key={plan.id}
+                className="relative w-full h-[200px] items-center"
+              >
                 <Image
                   priority
-                  src={book.thumbnail}
-                  alt={book.title}
+                  src={plan.thumbnail}
+                  alt={plan.name}
                   layout="fill"
                   objectFit="cover"
-                  className="object-cover"
+                  className="object-cover mosaic"
                 />
+                <div className="absolute top-0 left-0 w-full h-full bg-[#5a4b3e99]"></div>
+                {/* <div className="absolute mx-4 my-6 flex flex-col bg-red-50 h-full"> */}
+                <div className="absolute my-5 text-white text-lg font-bold">
+                  {plan.title}
+                </div>
+                <div className="absolute bottom-4  w-full ">
+                  <div className="rounded mx-2 bg-primary-600 py-2 text-white font-bold text-center">
+                    もっと詳しく
+                  </div>
+                </div>
+                {/* </div> */}
               </div>
             ))}
           </a>
         </div>
-
-        {/* プランのリクエストを送るならモーダル必要 */}
-
-        {showModal && (
-          <div className="absolute top-0 left-0 right-0 bottom-0 bg-slate-900 bg-opacity-50 flex justify-center items-center modal">
-            <div className="bg-white p-8 rounded-lg">
-              <h3 className="text-xl mb-4">プランをリクエストしますか</h3>
-              <button
-                onClick={handlePurchaseConfirm}
-                className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded mr-4"
-              >
-                リクエストする
-              </button>
-              <button
-                onClick={handleCancel}
-                className="bg-gray-500 hover:bg-gray-700 text-white font-bold py-2 px-4 rounded"
-              >
-                キャンセル
-              </button>
-            </div>
-          </div>
-        )}
       </div>
     </>
   );
