@@ -140,16 +140,14 @@ const Book = ({ book, isPurchased, user }: BookProps) => {
                   className="object-cover mosaic"
                 />
                 <div className="absolute top-0 left-0 w-full h-full bg-[#5a4b3e99]"></div>
-                {/* <div className="absolute mx-4 my-6 flex flex-col bg-red-50 h-full"> */}
-                <div className="absolute my-5 text-white text-lg font-bold">
+                <div className="absolute my-5 mx-2 text-white text-lg font-bold">
                   {plan.title}
                 </div>
-                <div className="absolute bottom-4  w-full ">
+                <div className="absolute bottom-4 w-full ">
                   <div className="rounded mx-2 bg-primary-600 py-2 text-white font-bold text-center">
                     もっと詳しく
                   </div>
                 </div>
-                {/* </div> */}
               </div>
             ))}
           </a>
