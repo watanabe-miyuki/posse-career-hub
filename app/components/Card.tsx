@@ -1,13 +1,12 @@
 "use client";
 
 import Image from "next/image";
-import { BookType, User } from "../types/types";
+import { CardType, User } from "../types/types";
 import { useRouter } from "next/navigation";
 import Link from "next/link";
 
-type BookProps = {
-  book: BookType;
-  isPurchased: boolean;
+type CardProps = {
+  card: CardType;
   user: User;
 };
 
@@ -18,7 +17,7 @@ type BookProps = {
  */
 
 // eslint-disable-next-line react/display-name
-const Book = ({ book, isPurchased, user }: BookProps) => {
+const Card = ({ card, user }: CardProps) => {
   // console.log(isPurchased);
   const router = useRouter();
 
@@ -32,10 +31,10 @@ const Book = ({ book, isPurchased, user }: BookProps) => {
             "Content-Type": "application/json",
           },
           body: JSON.stringify({
-            title: book.title,
-            price: book.price,
+            // title: card.title,
+            // price: card.price,
             userId: user?.id,
-            bookId: book.id,
+            bookId: card.id,
           }),
         }
       );
@@ -52,11 +51,11 @@ const Book = ({ book, isPurchased, user }: BookProps) => {
   // useStateをつかときはuse clientをつける
 
   const handlePlanRequestClick = () => {
-    if (isPurchased) {
-      alert("すでに購入済みです");
-    } else {
-      alert("プランをリクエストしますか？");
-    }
+    // if (isPurchased) {
+    //   alert("すでに購入済みです");
+    // } else {
+    //   alert("プランをリクエストしますか？");
+    // }
 
     console.log("purchase");
   };
@@ -110,7 +109,7 @@ const Book = ({ book, isPurchased, user }: BookProps) => {
               ★★★★★ 5.0 (7)
             </p>
             {/* プランがない場合 */}
-            {!book.plans.length && (
+            {!card.plans.length && (
               <div className="flex justify-center ">
                 <button
                   className="bg-primary-500 hover:bg-primary-700 text-white font-bold py-2 mx-4 w-full rounded text-center mb-4"
@@ -126,7 +125,7 @@ const Book = ({ book, isPurchased, user }: BookProps) => {
             href="#"
             // className="cursor-pointer shadow-2xl duration-300 hover:translate-y-1 hover:shadow-none"
           >
-            {book.plans.map((plan) => (
+            {card.plans.map((plan) => (
               <div
                 key={plan.id}
                 className="relative w-full h-[200px] items-center"
@@ -134,7 +133,7 @@ const Book = ({ book, isPurchased, user }: BookProps) => {
                 <Image
                   priority
                   src={plan.thumbnail}
-                  alt={plan.name}
+                  alt={plan.title}
                   layout="fill"
                   objectFit="cover"
                   className="object-cover mosaic"
@@ -157,4 +156,4 @@ const Book = ({ book, isPurchased, user }: BookProps) => {
   );
 };
 
-export default Book;
+export default Card;

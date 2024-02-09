@@ -1,21 +1,24 @@
 import exp from "constants";
 
-type BookType = {
+type CardType = {
   id: number;
-  title: string;
-  content: string;
-  price: number;
+  author: string;
+  company: string;
+  description: string;
+  profession: string;
+  posseGeneration: string;
   createdAt: string;
   updatedAt: string;
+  content: string;
   plans: Plan[];
 };
 
 type Plan = {
-  id: string;
-  name: string;
-  description: number;
+  id: number;
+  profileIcon: string;
   title: string;
   thumbnail: string;
+  status: string;
 }
 
 type User = {
@@ -33,4 +36,4 @@ type Purchase = {
   user: User;
 }
 
-export type { BookType, User, Purchase };
+export type { CardType, User, Purchase };
