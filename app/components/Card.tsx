@@ -50,14 +50,25 @@ const Card = ({ card, user }: CardProps) => {
 
   // useStateをつかときはuse clientをつける
 
-  const handlePlanRequestClick = () => {
-    // if (isPurchased) {
-    //   alert("すでに購入済みです");
-    // } else {
-    //   alert("プランをリクエストしますか？");
-    // }
+  const handlePlanRequestClick = async () => {
+    const userId = card.providerAccountId;
+    const content = `${user.name}さんからプランリクエストが届いています。`;
 
-    console.log("purchase");
+    const response = await fetch("/api/plan-requests/create", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({ userId, content }),
+    });
+
+    console.log(response);
+
+    if (response.ok) {
+      console.log("Message sent successfully!");
+    } else {
+      console.error("Failed to send messageだよ");
+    }
   };
 
   return (
@@ -97,13 +108,15 @@ const Card = ({ card, user }: CardProps) => {
                   className="m-4"
                 />
                 <div className="m-2">
-                  <p className="text-lg font-semibold">渡邊美由貴</p>
-                  <p>アンチパターン株式会社</p>
+                  <p className="text-lg font-semibold">{card.author}</p>
+                  <p>{card.company}</p>
                 </div>
               </Link>
             </div>
             <p className="m-2 text-lg text-slate-600">
-              25卒です。気軽に申請して...
+              {card.description.length > 100
+                ? card.description.slice(0, 100) + "..."
+                : card.description}
             </p>
             <p className="m-2 text-md text-slate-700 text-center">
               ★★★★★ 5.0 (7)

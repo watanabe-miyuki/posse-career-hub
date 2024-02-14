@@ -10,6 +10,7 @@ type CardType = {
   createdAt: string;
   updatedAt: string;
   content: string;
+  providerAccountId: string;
   plans: Plan[];
 };
 
