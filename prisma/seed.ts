@@ -31,6 +31,7 @@ async function main() {
       name: "keiostudent",
       email: "watanabemiyuki@keio.jp",
       image: "https://cdn.discordapp.com/embed/avatars/0.png",
+      companyId: "clsmmbdl60001egdbp5njkjpy",
     },
     {
       id: "clsfu93mw000880omtlmr9o9r",
@@ -38,12 +39,14 @@ async function main() {
       email: "kirin.myk2018@gmail.com",
       image:
         "https://cdn.discordapp.com/avatars/1005010589753540648/e25993ef29f19d265e6e3ba26eaf8f7d.png",
+      companyId: "clsmmbc820000egdb9aczsjg8",
     },
     {
       id: "clsfua2gw000b80omh0l70qu7",
       name: "posseintern",
       email: "miyuki.watanabe@posse-ap.com",
       image: "https://cdn.discordapp.com/embed/avatars/0.png",
+      companyId: "clsmmbf6n0002egdbhq1vfsw5",
     },
   ];
 
@@ -86,6 +89,81 @@ async function main() {
     },
   ];
 
+  const companyData = [
+    {
+      id: "clsmmbc820000egdb9aczsjg8",
+      name: "株式会社ポッセ",
+    },
+    {
+      id: "clsmmbdl60001egdbp5njkjpy",
+      name: "慶應義塾大学",
+    },
+    {
+      id: "clsmmbf6n0002egdbhq1vfsw5",
+      name: "株式会社アンチパターン",
+    },
+  ];
+
+  const plans = [
+    {
+      id: "clsfu8b9g000980om7m4h9q5o",
+      userId: "clsfu93mw000880omtlmr9o9r",
+      title: "【教授指導】即日対応 模擬面接しましょう！",
+      description: "教授による模擬面接です。気軽に申請してください。",
+      image: "/thumbnails/friends.jpg",
+      status: "pending",
+    },
+    {
+      id: "clsfu8c2x000a80om1j3r8w9y",
+      userId: "clsfu93mw000880omtlmr9o9r",
+      title: "【教授指導】模擬面接",
+      description: "教授による模擬面接です。気軽に申請してください。",
+      image: "/thumbnails/group.jpg",
+      status: "open",
+    },
+    {
+      id: "clsfu8d0g000c80om1z3r8w9y",
+      userId: "clsfua2gw000b80omh0l70qu7",
+      title: "【インターン生】即日対応 模擬面接しましょう！",
+      description: "インターン生による模擬面接です。気軽に申請してください。",
+      image: "/thumbnails/friends.jpg",
+      status: "pending",
+    },
+    {
+      id: "clsfu8d7g000d80om1z3r8w9y",
+      userId: "clsfua2gw000b80omh0l70qu7",
+      title: "【インターン生】模擬面接",
+      description: "インターン生による模擬面接です。気軽に申請してください。",
+      image: "/thumbnails/group.jpg",
+      status: "open",
+    },
+  ];
+
+  const applications = [
+    {
+      id: "clsfu8e4g000e80om1z3r8w9y",
+      userId: "clsfu93mw000880omtlmr9o9r",
+      recipientId: "clsfua2gw000b80omh0l70qu7",
+      status: "requested",
+      planId: null,
+    },
+    {
+      id: "clsfu8f1g000f80om1z3r8w9y",
+      userId: "clsfua2gw000b80omh0l70qu7",
+      recipientId: "clsfu93mw000880omtlmr9o9r",
+      status: "requested",
+      planId: null,
+    },
+  ];
+
+  for (const company of companyData) {
+    await prisma.company.upsert({
+      where: { name: company.name },
+      update: {},
+      create: company,
+    });
+  }
+
   for (const user of users) {
     await prisma.user.upsert({
       where: { email: user.email },
@@ -96,7 +174,7 @@ async function main() {
         email: user.email,
         emailVerified: null,
         image: user.image,
-        companyId: null,
+        companyId: user.companyId,
         description: null,
         profession: null,
         posseGeneration: null,
@@ -118,6 +196,29 @@ async function main() {
       scope: account.scope,
       id_token: null,
       session_state: null,
+    });
+  }
+
+  for (const plan of plans) {
+    await prisma.plan.upsert({
+      where: { id: plan.id },
+      update: {},
+      create: {
+        id: plan.id,
+        userId: plan.userId,
+        title: plan.title,
+        description: plan.description,
+        image: plan.image,
+        isPublic: true,
+      },
+    });
+  }
+
+  for (const application of applications) {
+    await prisma.application.upsert({
+      where: { id: application.id },
+      update: {},
+      create: application,
     });
   }
 
