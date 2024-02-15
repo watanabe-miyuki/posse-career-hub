@@ -1,7 +1,7 @@
 import exp from "constants";
 
 type CardType = {
-  id: number;
+  id: string;
   author: string;
   company: string;
   description: string;

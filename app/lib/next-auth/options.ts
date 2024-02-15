@@ -1,3 +1,4 @@
+import { useRouter } from "next/navigation";
 import { NextAuthOptions } from "next-auth";
 // import GithubProvider from "next-auth/providers/github";
 import { PrismaAdapter } from "@next-auth/prisma-adapter";
@@ -45,28 +46,41 @@ export const nextAuthOptions: NextAuthOptions = {
   adapter: PrismaAdapter(prisma),
   callbacks: {
     /**
-     * sessionにaccessTokenと、user.idを追加
-     */
-    session: async ({ session, token }) => {
-      (session as any).accessToken = token.accessToken;
-      if (session.user) {
-        (session as any).user.id = token.id;
-      }
-      return session;
-    },
-
-    /**
      * jwtにaccessTokenと、profile.idを追加
      */
     jwt: async ({ token, account, profile }) => {
       if (account && account.access_token) {
         token.accessToken = account.access_token;
       }
-      if (profile) {
-        token.id = (profile as any).id;
+      if (profile as any) {
+        token.providerAccountId = (profile as any).id;
+
+        // Discord ID から内部の User テーブルの id を検索
+        const account = await prisma.account.findUnique({
+          where: {
+            provider_providerAccountId: {
+              provider: "discord",
+              providerAccountId: (profile as any).id,
+            },
+          },
+        });
+        if (account) {
+          token.userId = account.userId;
+        }
       }
 
       return token;
+    },
+
+    /**
+     * sessionにaccessTokenと、user.idを追加
+     */
+    session: async ({ session, token }) => {
+      (session as any).accessToken = token.accessToken;
+      if (session.user && token.userId) {
+        (session as any).user.id = token.userId; // User テーブルの id をセッションに格納
+      }
+      return session;
     },
 
     /**

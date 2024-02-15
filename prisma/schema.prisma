@@ -61,6 +61,7 @@ model User {
   sessions      Session[]
   plans         Plan[]
   applications  Application[]
+  receivedApplications Application[] @relation("applicationRecipient") // 追加: Userが応募先としての応募を示す
   description   String?
   profession    String?
   posseGeneration String?
@@ -93,21 +94,24 @@ model VerificationToken {
 
 model Company {
   id String @id @default(cuid())
-  name String
+  name String @unique
   users User[]
 }
 
 model Application {
   id        String   @id @default(cuid())
-  userId    String   // 応募者のユーザーID
-  planId    String   // 応募された計画のID
-  status    String   // 応募の状態 ("pending", "approved", "rejected" など)
+  userId    String // 応募したユーザーID
+  recipientId String // 応募先のユーザーID
+  planId    String?   // 応募された計画のID
+  status    String   // 応募の状態 ("pending", "approved", "rejected", "requested":プランを出してもらうリクエスト)
   createdAt DateTime @default(now()) // 応募日時
   updatedAt DateTime @updatedAt     // 最終更新日時
 
   user      User     @relation(fields: [userId], references: [id])
-  plan      Plan     @relation(fields: [planId], references: [id])
+  recipient   User     @relation("applicationRecipient", fields: [recipientId], references: [id])
+  plan      Plan?     @relation(fields: [planId], references: [id])
 
   @@index([userId], name: "idx_application_user")
+  @@index([recipientId], name: "idx_application_recipient")
   @@index([planId], name: "idx_application_plan")
 }

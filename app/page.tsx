@@ -3,17 +3,65 @@
 import nextAuth, { getServerSession } from "next-auth";
 import Card from "./components/Card";
 import { nextAuthOptions } from "./lib/next-auth/options";
-import { Purchase, User } from "./types/types";
+import { User } from "./types/types";
+import { log } from "console";
+
+
 
 //https://zenn.dev/arsaga/articles/3f5bce7c904ebe#%E3%83%90%E3%83%BC%E3%82%B8%E3%83%A7%E3%83%B3%E6%83%85%E5%A0%B1
 // 疑似データ
 let contents = [
   {
-    id: 1,
-    author: "渡邊美由貴",
+    id: "clsfu890m000580omel41ezwy",
+    providerAccountId: "1005010589753540648",
+    author: "2.5watanabemiyuki",
+    icon: "https://source.unsplash.com/random/1",
     company: "株式会社ポッセ",
     description: "25卒です。気軽に申請してください。このアプリの開発者です。",
-    profession: "エンジニア",
+    profession: "POSSE生",
+    posseGeneration: "①2.5期生",
+    plans: [],
+    content: "Content 1",
+    createdAt: new Date().toString(),
+    updatedAt: new Date().toString(),
+  },
+  {
+    id: "clsfu93mw000880omtlmr9o9r",
+    providerAccountId: "1205793522406653952",
+    author: "keiostudent",
+    icon: "https://source.unsplash.com/random/1",
+    company: "慶應義塾大学",
+    description: "25卒です。気軽に申請してください。このアプリの開発者です。",
+    profession: "大学教授",
+    posseGeneration: "①2.5期生",
+    plans: [
+      {
+        id: 1,
+        profileIcon: "https://source.unsplash.com/random/2",
+        title: "【25卒向け】即日対応 模擬面接しましょう！",
+        thumbnail: "/thumbnails/friends.jpg",
+        status: "pending", // 申請中 or "open","approved", "rejected", "request",
+      },
+      {
+        id: 2,
+        profileIcon: "https://source.unsplash.com/random/3",
+        title: "【25卒向け】模擬面接",
+        thumbnail: "/thumbnails/group.jpg",
+        status: "open",
+      },
+    ],
+    content: "Content 1",
+    createdAt: new Date().toString(),
+    updatedAt: new Date().toString(),
+  },
+  {
+    id: "clsfua2gw000b80omh0l70qu7",
+    providerAccountId: "1205792405236748341",
+    author: "keiostudent",
+    icon: "https://source.unsplash.com/random/1",
+    company: "株式会社アンチパターン",
+    description: "25卒です。気軽に申請してください。このアプリの開発者です。",
+    profession: "インターン生",
     posseGeneration: "①2.5期生",
     plans: [
       {
@@ -51,9 +99,10 @@ export default async function Home() {
   // getServerSessionは、user情報をグローバルに管理しているので、親子コンポーネントそれぞれで使っても、同じuser情報を参照する
   // ↑ usecontextと同じ
   const session = await getServerSession(nextAuthOptions);
+  const user = session?.user as User;
+  console.log('userだよね',user);
   // as User は、session.userがnullの場合にエラーが出るのを防ぐためにつける
   // as は、型アサーションというもので、型を強制的に変換するもの
-  const user = session?.user as User;
   // if (user) {
   //   const response = await fetch(
   //     `${process.env.NEXT_PUBLIC_API_URL}/plans/${user.id}`,
