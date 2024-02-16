@@ -118,9 +118,17 @@ const Card = ({ card, user }: CardProps) => {
                   {plan.title}
                 </div>
                 <div className="absolute bottom-4 w-full ">
-                  <div className="rounded mx-2 bg-primary-600 py-2 text-white font-bold text-center">
-                    もっと詳しく
-                  </div>
+                  {
+                    plan.status === "open" ? (
+                      <div className="rounded mx-2 bg-primary-600 py-2 text-white font-bold text-center">
+                        もっと詳しく
+                      </div>
+                    ) : (
+                      <div className="rounded mx-2 bg-gray-600 py-2 text-white font-bold text-center">
+                        リクエスト済み
+                      </div>
+                    )
+                  }
                 </div>
               </div>
             </a>
