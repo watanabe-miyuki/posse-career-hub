@@ -6,10 +6,9 @@ import { headers } from "next/headers";
 import Image from "next/image";
 import React from "react";
 
-// フォルダ名を[id]にすると、動的ルーティングになる
-// そのため、paramsの中身は{ id: string }になる
-
 const DetailPlan = async ({ params }: { params: { id: string } }) => {
+  // usestateで、プランと人を分けたいから、クライアントコンポーネントにしなきゃかなあ><
+
   const session = await getServerSession(nextAuthOptions);
   const user = session?.user as User;
   const response = await fetch(
@@ -19,7 +18,7 @@ const DetailPlan = async ({ params }: { params: { id: string } }) => {
       headers: Object.fromEntries(headers()),
     }
   );
-  const plan :PlanDetail = await response.json();
+  const plan: PlanDetail = await response.json();
 
   console.log("userだよ", user);
   return (
@@ -50,10 +49,7 @@ const DetailPlan = async ({ params }: { params: { id: string } }) => {
           <div className="">{plan.description}</div>
         </div>
         <div className="pt-5 mx-10 border-t-2 border-gray-200">
-          <PlanSubmitButton
-            plan={plan}
-            user={user}
-          />
+          <PlanSubmitButton plan={plan} user={user} />
         </div>
       </div>
     </div>

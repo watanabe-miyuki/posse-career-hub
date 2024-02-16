@@ -55,7 +55,7 @@ const Card = ({ card, user }: CardProps) => {
               <p className="bg-[#D5D338] grow text-center">②2.5期</p>
             </div>
             <div>
-              <Link className="flex " href={"hoge"}>
+              <Link className="flex " href={`/profile/${card.id}`}>
                 <Image
                   width={50}
                   height={50}
