@@ -4,6 +4,7 @@ import Image from "next/image";
 import { CardType, User } from "../types/types";
 import { useRouter } from "next/navigation";
 import Link from "next/link";
+import { useState } from "react";
 
 type CardProps = {
   card: CardType;
@@ -18,37 +19,11 @@ type CardProps = {
 
 // eslint-disable-next-line react/display-name
 const Card = ({ card, user }: CardProps) => {
+  // プランを出していない人にリクエストを送る
+  const [isRequested, setIsRequested] = useState(card.status === "requested");
+
   // console.log(isPurchased);
   const router = useRouter();
-
-  // const startCheckout = async () => {
-  //   try {
-  //     const response = await fetch(
-  //       `${process.env.NEXT_PUBLIC_API_URL}/checkout`,
-  //       {
-  //         method: "POST",
-  //         headers: {
-  //           "Content-Type": "application/json",
-  //         },
-  //         body: JSON.stringify({
-  //           // title: card.title,
-  //           // price: card.price,
-  //           userId: user?.id,
-  //           bookId: card.id,
-  //         }),
-  //       }
-  //     );
-  //     const responseData = await response.json();
-  //     // console.log(responseData);
-  //     if (responseData) {
-  //       router.push(responseData.checkout_url);
-  //     }
-  //   } catch (error) {
-  //     console.log(error);
-  //   }
-  // };
-
-  // useStateをつかときはuse clientをつける
 
   const handlePlanRequestClick = async () => {
     const content = `${user.name}さんからプランリクエストが届いています。\nさっそくプランの投稿をしよう！ [こちらから](${process.env.NEXT_PUBLIC_BASE_URL}/plans/${card.id})`;
@@ -63,6 +38,7 @@ const Card = ({ card, user }: CardProps) => {
 
     if (response.ok) {
       console.log("Message sent successfully!");
+      setIsRequested(true);
     } else {
       console.error("Failed to send messageだよ");
     }
@@ -104,7 +80,7 @@ const Card = ({ card, user }: CardProps) => {
             {/* プランがない場合 */}
             {!card.plans.length && (
               <div className="flex justify-center ">
-                {card.status === "requested" ? (
+                {isRequested ? (
                   <button
                     className="bg-gray-500 text-white font-bold py-2 mx-4 w-full rounded text-center mb-4"
                     disabled={true}
