@@ -15,10 +15,10 @@ export default async function Home() {
   // as User は、session.userがnullの場合にエラーが出るのを防ぐためにつける
   // as は、型アサーションというもので、型を強制的に変換するもの
   const response = await fetch(
-    `http://localhost:3000/api/plans?userId=clsfu93mw000880omtlmr9o9r`,
+    `${process.env.NEXT_PUBLIC_API_URL}/plans?userId=${user.id}`,
     {
       cache: "no-store",
-      // middlewareでheaderにtokenがセットされていないと、blockされるのでセットする
+      // サーバーコンポーネントではmiddlewareでheaderにtokenがセットされていないと、blockされるのでセットする
       headers: Object.fromEntries(headers()),
     }
   );
