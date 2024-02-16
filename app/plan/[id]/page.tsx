@@ -1,5 +1,6 @@
+import PlanSubmitButton from "@/app/components/PlanSubmitButton";
 import { nextAuthOptions } from "@/app/lib/next-auth/options";
-import { User } from "@/app/types/types";
+import { PlanDetail, User } from "@/app/types/types";
 import { getServerSession } from "next-auth";
 import { headers } from "next/headers";
 import Image from "next/image";
@@ -12,16 +13,15 @@ const DetailPlan = async ({ params }: { params: { id: string } }) => {
   const session = await getServerSession(nextAuthOptions);
   const user = session?.user as User;
   const response = await fetch(
-    `${process.env.NEXT_PUBLIC_API_URL}/plan/${params.id}?userId=${user.id}`,
+    `${process.env.NEXT_PUBLIC_API_URL}/plans/${params.id}?userId=${user.id}`,
     {
       cache: "no-store",
       headers: Object.fromEntries(headers()),
     }
   );
-  const plan = await response.json();
+  const plan :PlanDetail = await response.json();
 
-  console.log("huga", plan);
-
+  console.log("userだよ", user);
   return (
     <div className="container mx-auto p-4">
       <div className="full-width bg-primary-500 rounded flex mb-4 border-solid border-primary-500 border-2">
@@ -50,9 +50,10 @@ const DetailPlan = async ({ params }: { params: { id: string } }) => {
           <div className="">{plan.description}</div>
         </div>
         <div className="pt-5 mx-10 border-t-2 border-gray-200">
-          <button className="bg-primary-500 text-white font-bold py-3 w-full rounded text-center mb-4 ">
-            プランをリクエスト
-          </button>
+          <PlanSubmitButton
+            plan={plan}
+            user={user}
+          />
         </div>
       </div>
     </div>

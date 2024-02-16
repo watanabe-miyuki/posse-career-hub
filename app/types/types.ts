@@ -21,14 +21,24 @@ type Plan = {
   title: string;
   thumbnail: string;
   status: string;
-}
+};
+
+type PlanDetail = {
+  id: string;
+  userId: string;
+  providerAccountId: string;
+  title: string;
+  thumbnail: string;
+  description: string;
+  status: string;
+};
 
 type User = {
-    id: string;
-    name?: string | null | undefined;
-    email?: string | null | undefined;
-    image?: string | null | undefined;
-}
+  id: string;
+  name?: string | null | undefined;
+  email?: string | null | undefined;
+  image?: string | null | undefined;
+};
 
 type Purchase = {
   id: string;
@@ -36,6 +46,6 @@ type Purchase = {
   bookId: string;
   createdAt: string;
   user: User;
-}
+};
 
-export type { CardType, User, Purchase };
+export type { CardType, User, Purchase, PlanDetail };
