@@ -98,16 +98,13 @@ const Card = ({ card, user }: CardProps) => {
               </div>
             )}
           </div>
-          <a
-            onClick={handlePlanRequestClick}
-            href="#"
-            // className="cursor-pointer shadow-2xl duration-300 hover:translate-y-1 hover:shadow-none"
-          >
-            {card.plans.map((plan) => (
-              <div
-                key={plan.id}
-                className="relative w-full h-[200px] items-center"
-              >
+          {card.plans.map((plan) => (
+            <a
+              key={plan.id}
+              href={`/plan/${plan.id}`}
+              // className="cursor-pointer shadow-2xl duration-300 hover:translate-y-1 hover:shadow-none"
+            >
+              <div className="relative w-full h-[200px] items-center">
                 <Image
                   priority
                   src={plan.thumbnail}
@@ -126,8 +123,8 @@ const Card = ({ card, user }: CardProps) => {
                   </div>
                 </div>
               </div>
-            ))}
-          </a>
+            </a>
+          ))}
         </div>
       </div>
     </>
