@@ -32,7 +32,7 @@ export async function POST(request: Request) {
   } catch (error: any) {
     // エラーレスポンス
     return new Response(JSON.stringify({ error: error.message }), {
-      status: 499,
+      status: 500,
       headers: {
         "Content-Type": "application/json",
       },

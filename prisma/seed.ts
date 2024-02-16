@@ -213,6 +213,8 @@ async function main() {
       },
     });
   }
+  // 既存のapplicationデータを削除
+  await prisma.application.deleteMany({});
 
   for (const application of applications) {
     await prisma.application.upsert({
