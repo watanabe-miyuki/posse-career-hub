@@ -15,7 +15,7 @@ export async function GET(
       },
       include: {
         user: {
-          include: { company: true },
+          include: { company: true, accounts: true},
         },
         applications: {
           where: {
@@ -33,6 +33,8 @@ export async function GET(
 
     const formattedData = {
       id: plan!.id,
+      userId: plan!.user?.id,
+      providerAccountId: plan!.user?.accounts?.[0]?.providerAccountId,
       title: plan!.title,
       thumbnail: plan!.image,
       description: plan!.description,
