@@ -12,7 +12,7 @@ const Header = async () => {
   const user = session?.user;
   // console.log(user);
   return (
-    <header className="bg-primary-600 text-gray-100 shadow-lg">
+    <header className="bg-primary-600 text-gray-100 shadow-lg px-10">
       <nav className="flex items-center justify-between p-4">
         <Link href={"/"} className="text-xl font-bold">
           POSSE CARRER HUB
@@ -48,6 +48,7 @@ const Header = async () => {
               width={50}
               height={50}
               alt="profile_icon"
+              className="rounded-full"
               src={user?.image || "/default_icon.png"}
             />
           </Link>
