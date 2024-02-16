@@ -40,6 +40,16 @@ type User = {
   image?: string | null | undefined;
 };
 
+type UserDetail = {
+  id: string;
+  name: string | null;
+  image: string | null;
+  company: string | undefined;
+  description: string | null;
+  profession: string | null;
+  posseGeneration: string | null;
+};
+
 type Purchase = {
   id: string;
   userId: string;
@@ -48,4 +58,4 @@ type Purchase = {
   user: User;
 };
 
-export type { CardType, User, Purchase, PlanDetail };
+export type { CardType, User, UserDetail, Purchase, PlanDetail };
