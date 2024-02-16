@@ -12,6 +12,7 @@ type CardType = {
   content: string;
   providerAccountId: string;
   plans: Plan[];
+  status: string;
 };
 
 type Plan = {

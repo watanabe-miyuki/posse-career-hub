@@ -51,7 +51,7 @@ const Card = ({ card, user }: CardProps) => {
   // useStateをつかときはuse clientをつける
 
   const handlePlanRequestClick = async () => {
-    const content = `${user.name}さんからプランリクエストが届いています。`;
+    const content = `${user.name}さんからプランリクエストが届いています。\nさっそくプランの投稿をしよう！ [こちらから](${process.env.NEXT_PUBLIC_BASE_URL}/plans/${card.id})`;
 
     const response = await fetch("/api/plan-requests/create", {
       method: "POST",
@@ -60,8 +60,6 @@ const Card = ({ card, user }: CardProps) => {
       },
       body: JSON.stringify({ user, card, content }),
     });
-
-    console.log(response);
 
     if (response.ok) {
       console.log("Message sent successfully!");
@@ -72,23 +70,6 @@ const Card = ({ card, user }: CardProps) => {
 
   return (
     <>
-      {/* アニメーションスタイル */}
-      <style jsx global>{`
-        @keyframes fadeIn {
-          from {
-            opacity: 0;
-            transform: scale(0.9);
-          }
-          to {
-            opacity: 1;
-            transform: scale(1);
-          }
-        }
-        .modal {
-          animation: fadeIn 0.3s ease-out forwards;
-        }
-      `}</style>
-
       <div className="shadow-2xl">
         <div>
           <div>
@@ -113,7 +94,7 @@ const Card = ({ card, user }: CardProps) => {
               </Link>
             </div>
             <p className="m-2 text-lg text-slate-600">
-              {card.description.length > 100
+              {card.description?.length > 100
                 ? card.description.slice(0, 100) + "..."
                 : card.description}
             </p>
@@ -123,12 +104,21 @@ const Card = ({ card, user }: CardProps) => {
             {/* プランがない場合 */}
             {!card.plans.length && (
               <div className="flex justify-center ">
-                <button
-                  className="bg-primary-500 hover:bg-primary-700 text-white font-bold py-2 mx-4 w-full rounded text-center mb-4"
-                  onClick={handlePlanRequestClick}
-                >
-                  プランをリクエスト
-                </button>
+                {card.status === "requested" ? (
+                  <button
+                    className="bg-gray-500 text-white font-bold py-2 mx-4 w-full rounded text-center mb-4"
+                    disabled={true}
+                  >
+                    リクエスト済み
+                  </button>
+                ) : (
+                  <button
+                    className="bg-primary-500 hover:bg-primary-700 text-white font-bold py-2 mx-4 w-full rounded text-center mb-4"
+                    onClick={handlePlanRequestClick}
+                  >
+                    プランをリクエスト
+                  </button>
+                )}
               </div>
             )}
           </div>
